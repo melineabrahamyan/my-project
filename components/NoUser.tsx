@@ -8,17 +8,16 @@ const NoUser = () => {
         width={350}
         height={350}
         alt="logo"
-        className="mx-auto"
+        className="mx-auto px-10 md:px-0"
       />
-      <h1 className="text-3xl font-semibold text-foreground text-center">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-foreground text-center">
         No Users Registered Yet
       </h1>
-      <p className="text-muted-foreground text-center">
+      <p className="text-muted-foreground text-center text-sm sm:text-[16px]">
         Currently, no users have registered on the website.
       </p>
-      <p className="text-muted-foreground text-center max-w-[700px] w-full mx-auto">
-        Once users sign up, they will appear here for you to manage. Feel free
-        to share the registration link with potential users to get started.
+      <p className="text-muted-foreground text-center max-w-[700px] w-full mx-auto text-sm sm:text-[16px]">
+        Once users sign up, they will appear here for you to manage.
       </p>
     </div>
   );

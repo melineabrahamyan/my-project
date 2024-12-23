@@ -11,11 +11,12 @@ const LogoutBtn = () => {
     router.refresh();
   };
   return (
-    <div className="h-full absolute flex items-center justify-between  px-10 top-0 right-0 ">
-      <button onClick={handleLogout} className="text-xl font-bold z-50">
-        Logout
-      </button>
-    </div>
+    <button
+      className="px-2 py-2 rounded-sm bg-purple-500 text-xl font-bold text-white"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
   );
 };
 

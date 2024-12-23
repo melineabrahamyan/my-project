@@ -1,5 +1,4 @@
 import { AdminHeader } from "@/components/AdminHeader";
-import Sidebar from "@/components/Sidebar";
 
 export default function Layout({
   children,
@@ -8,10 +7,9 @@ export default function Layout({
 }>) {
   return (
     <>
-      <div className="relative min-h-screen ">
+      <div className="relative min-h-screen h-full">
         <AdminHeader />
-        <div className="bg-cover bg-center bg-black bg-no-repeat h-[100vh] flex">
-          <Sidebar/>
+        <div className="bg-gradient-to-br from-[#E5DEFF] to-background flex">
           {children}
         </div>
       </div>

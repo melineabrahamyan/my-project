@@ -5,8 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getFormattedDate = () => {
-  const now = new Date(Date.now());
+export const getFormattedDate = (now: Date = new Date(Date.now())) => {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -50,7 +49,7 @@ export const generateEmailNotification = ({
         <li><strong>Registration Date:</strong> ${getFormattedDate()}</li>
       </ul>
       <p>You can review the new registration in the admin dashboard:</p>
-      <a href="${baseUrl}"
+      <a href="${baseUrl}/admin/dashboard"
         style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
         Go to Dashboard
       </a>

@@ -112,10 +112,10 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-[#E5DEFF] to-background p-6 sm:p-10 w-full">
+    <div className="min-h-[100vh] h-full p-6 sm:p-10 w-full">
       <div className="max-w-xl mx-auto animate-fadeIn pt-24">
         <div className="bg-white space-y-3 bg-opacity-70 backdrop-blur-lg border border-white border-opacity-20 shadow-lg rounded-xl p-8">
-          <h1 className="text-3xl font-semibold text-foreground mb-6">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-6">
             Change Password
           </h1>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -54,15 +55,13 @@ const Google = () => {
             <ChevronLeftIcon className="w-6 h-6 absolute top-[54px]" />
           </Link>
           <div className="flex flex-col items-center space-y-8">
-            <div className="flex items-center justify-center space-x-1">
-              <span className="text-google-blue text-3xl font-medium">G</span>
-              <span className="text-google-red text-3xl font-medium">o</span>
-              <span className="text-google-yellow text-3xl font-medium">o</span>
-              <span className="text-google-blue text-3xl font-medium">g</span>
-              <span className="text-google-green text-3xl font-medium">l</span>
-              <span className="text-google-red text-3xl font-medium">e</span>
-            </div>
-
+            <Image
+              src="/google.webp"
+              width={120}
+              height={40}
+              alt="google"
+              className="mx-auto"
+            />
             <div className="text-center space-y-2">
               <h1 className="text-2xl font-normal text-gray-900">Sign in</h1>
               <p className="text-base text-gray-600">Use your Google Account</p>

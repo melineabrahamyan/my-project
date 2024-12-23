@@ -25,7 +25,6 @@ export type Template = {
 const SendEmail = () => {
   const [email, setEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [senderEmail, setSenderEmail] = useState<string>("");
   const [template, setTemplate] = useState<string>("");
   const [templates, setTemplates] = useState<Template[]>([
     {
@@ -150,17 +149,17 @@ const SendEmail = () => {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-[#E5DEFF] to-background p-6 sm:p-10 w-full">
-      <div className="max-w-2xl mx-auto animate-fadeIn pt-24">
+    <div className="min-h-[100vh] h-full p-6 sm:p-10 w-full">
+      <div className="max-w-2xl mx-auto  pt-24">
         <div className="bg-white  bg-opacity-70 backdrop-blur-lg border border-white border-opacity-20 shadow-lg rounded-xl p-8">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground sm:mb-2">
             Email Campaign
           </h1>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-5 sm:mb-8">
             Create and send email campaigns to your users
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Recipient Email</Label>
               <Input
@@ -169,19 +168,6 @@ const SendEmail = () => {
                 placeholder="user@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input-transition"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="senderEmail">Sender Email</Label>
-              <Input
-                id="senderEmail"
-                type="email"
-                placeholder="user@example.com"
-                value={senderEmail}
-                onChange={(e) => setSenderEmail(e.target.value)}
                 className="input-transition"
                 required
               />
