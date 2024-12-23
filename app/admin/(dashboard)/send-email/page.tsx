@@ -15,40 +15,43 @@ import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
 import EditorModal from "@/components/EditorModal";
 import DeleteTemplateModal from "@/components/DeleteTemplateModal";
+import { sendEmailNotification } from "@/actions/notification";
+import { addFooter } from "@/lib/utils";
 
 export type Template = {
   id: string;
   name: string;
   content: string;
+  editable: boolean;
 };
 
 const SendEmail = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [from, setFrom] = useState<string>("");
   const [template, setTemplate] = useState<string>("");
   const [templates, setTemplates] = useState<Template[]>([
     {
-      id: "welcome",
-      name: "Welcome Email",
-      content: `<h1>Hello!</h1><p>Thank you for joining our platform. We're excited to have you on board!</p><p><a href="http://localhost:3000" rel="noopener noreferrer" target="_blank" style="color: rgb(0, 138, 0);">Sign up now!</a></p>
-`,
+      id: "editable_template",
+      name: "Driver Invitation 1",
+      editable: true,
+      content: `<h1>Welcome to Our Logistics Platform!</h1>
+                <p>Dear Driver,</p>
+                <p>We are thrilled to invite you to join our logistics platform. It's an easy and efficient way to find delivery jobs and grow your income.</p>
+             `,
     },
     {
-      id: "newsletter",
-      name: "Newsletter",
-      content: `<h1>Hello!</h1><p>Thank you for joining our platform. We're excited to have you on board!</p>`,
-    },
-    {
-      id: "promotion",
-      name: "Promotion",
-      content: `<h1>Hello!</h1><p>Thank you for joining our platform. We're excited to have you on board!</p>`,
-    },
-    {
-      id: "update",
-      name: "Product Update",
-      content: `<h1>Hello!</h1><p>Thank you for joining our platform. We're excited to have you on board!</p>`,
+      id: "default_template",
+      name: "Driver Invitation 2",
+      editable: false,
+      content: `<h1>Join Our Logistics Platform!</h1>
+                <p>Hello Driver,</p>
+                <p>Our platform connects you with hundreds of delivery opportunities every day. Start earning today with our streamlined process and reliable support.</p>
+               `,
     },
   ]);
+
   const [templateToEdit, setTemplateToEdit] = useState<Template | null>(null);
   const [templateToDelete, setTemplateToDelete] = useState<Template | null>(
     null
@@ -93,6 +96,7 @@ const SendEmail = () => {
         id: templateName.toLowerCase().replace(/\s+/g, "-"),
         name: templateName,
         content: templateContent,
+        editable: true,
       };
       setTemplates((prev) => [...prev, newTemplate]);
       setTemplate(newTemplate.id);
@@ -116,14 +120,31 @@ const SendEmail = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Email Sent Successfully",
-      description: "Your email has been scheduled for delivery.",
-    });
-    setEmail("");
-    setTitle("");
-    setTemplate("");
-    setTemplateToEdit(null);
+    setLoading(true);
+    try {
+      const footer = addFooter();
+      const fullTemplate =
+        templates.find((tpl) => tpl.id === template)?.content + footer;
+      await sendEmailNotification({
+        from: { name: from.trim() },
+        to: email.trim(),
+        subject: title.trim(),
+        html: fullTemplate,
+      });
+
+      toast({
+        title: "Email Sent Successfully",
+        description: "Your email has been scheduled for delivery.",
+      });
+    } catch (error) {
+    } finally {
+      setLoading(false);
+      setEmail("");
+      setTitle("");
+      setFrom("");
+      setTemplate("");
+      setTemplateToEdit(null);
+    }
   };
 
   const handleValueChange = (value: string) => {
@@ -174,6 +195,18 @@ const SendEmail = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="from">App Name</Label>
+              <Input
+                id="from"
+                placeholder="Your App Name"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                className="input-transition"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="title">Email Title</Label>
               <Input
                 id="title"
@@ -203,20 +236,24 @@ const SendEmail = () => {
                       className="flex items-center justify-between"
                       key={tpl.id}
                     >
-                      <SelectItem value={tpl.id}>{tpl.name}</SelectItem>
-                      <div className="px-2 flex items-center gap-2">
-                        <button
-                          onClick={() => handleEditClick(tpl)}
-                          className="text-[#3B2F47] font-semibold"
-                        >
-                          Edit
-                        </button>
-                        <FaTrashAlt
-                          onClick={() => handleDeletClick(tpl)}
-                          className="w-4 h-4 cursor-pointer"
-                          fill="red"
-                        />
-                      </div>
+                      <SelectItem value={tpl.id}>
+                        {tpl.name} {!tpl.editable && " - Default"}
+                      </SelectItem>
+                      {tpl.editable && (
+                        <div className="px-2 flex items-center gap-2">
+                          <button
+                            onClick={() => handleEditClick(tpl)}
+                            className="text-[#3B2F47] font-semibold"
+                          >
+                            Edit
+                          </button>
+                          <FaTrashAlt
+                            onClick={() => handleDeletClick(tpl)}
+                            className="w-4 h-4 cursor-pointer"
+                            fill="red"
+                          />
+                        </div>
+                      )}
                     </div>
                   ))}
                   <SelectItem value="new-template">
@@ -226,7 +263,11 @@ const SendEmail = () => {
               </Select>
             </div>
 
-            <Button type="submit" className="w-full hover-scale">
+            <Button
+              disabled={loading}
+              type="submit"
+              className="w-full hover-scale"
+            >
               Send Email
             </Button>
           </form>

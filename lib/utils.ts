@@ -58,3 +58,18 @@ export const generateEmailNotification = ({
     `,
   };
 };
+
+export const addFooter = () => {
+  return `<footer style="background-color: #f8f9fa; padding: 40px 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <p style="font-size: 18px; margin-bottom: 20px;">Don't miss out on amazing delivery opportunities!</p>
+    <a href="https://my-project-nine-lime.vercel.app" 
+       style="display: inline-block; padding: 15px 30px; background-color: #008A00; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold; text-transform: uppercase; transition: background-color 0.3s;">
+       Register Now
+    </a>
+    <hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+    <p style="font-size: 14px; color: #777;">&copy; 2024 Your Company Name. All rights reserved.</p>
+  </div>
+</footer>
+`;
+};

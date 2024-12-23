@@ -6,7 +6,7 @@ interface IEmailRequest {
   };
   to: string;
   subject: string;
-  html: String;
+  html: string;
 }
 
 export const sendEmailNotification = async <T = IEmailRequest>(
