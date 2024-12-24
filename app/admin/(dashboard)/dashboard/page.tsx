@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { getFormattedDate } from "@/lib/utils";
+import Statistics from "@/components/Statistics";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -69,9 +70,12 @@ const Dashboard = () => {
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">
               User Management
             </h1>
-            <p className="text-muted-foreground mb-8">
-              Manage your user credentials securely
-            </p>
+            <div className="flex justify-between flex-col lg:flex-row">
+              <p className="text-muted-foreground mb-8 hidden lg:inline">
+                Manage your user credentials securely
+              </p>
+              <Statistics />
+            </div>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" />
               <Input

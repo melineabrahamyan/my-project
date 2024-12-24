@@ -1,4 +1,5 @@
 const animate = require("tailwindcss-animate");
+const { nextui } = require("@nextui-org/react");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,14 +11,29 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
 
   theme: {
+    screens: {
+      "2xl": "1536px",
+      xl: "1280px",
+      lg: "1024px",
+      md: "768px",
+      sm: "640px",
+      xs: "460px",
+      small: "400px",
+    },
     container: {
       center: true,
       padding: "1.5rem",
       screens: {
         "2xl": "1400px",
+      },
+    },
+    date: {
+      screens: {
+        xs: "400px",
       },
     },
     extend: {
@@ -120,5 +136,5 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, nextui()],
 };

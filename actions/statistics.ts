@@ -14,3 +14,29 @@ export const sendUserIPAddress = async () => {
     throw new Error(message);
   }
 };
+
+interface getIPAddressRangeResponse {
+  count: number;
+}
+
+export const getIPAddressRange = async (
+  startDate?: string,
+  endDate?: string
+) => {
+  try {
+    const response = await axiosApiInstance.get<getIPAddressRangeResponse>(
+      "/ip-address/range",
+      {
+        params: {
+          startDate,
+          endDate,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "An unexpected error occurred";
+    throw new Error(message);
+  }
+};
