@@ -101,7 +101,7 @@ const Email = () => {
                 </Button>
 
                 <p className="text-gray-600 text-sm sm:text-base">
-                  Don't have an account?{" "}
+                  Don&apos;t have an account?{" "}
                   <Link
                     href="/sign-up"
                     className="text-[#FAB01C] font-bold underline hover:text-yellow-600"
