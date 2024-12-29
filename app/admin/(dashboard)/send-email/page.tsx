@@ -126,7 +126,7 @@ const SendEmail = () => {
       const fullTemplate =
         templates.find((tpl) => tpl.id === template)?.content + footer;
       await sendEmailNotification({
-        from: { name: from.trim() },
+        from: { name: from.trim(), address: "email@example.com" },
         to: email.trim(),
         subject: title.trim(),
         html: fullTemplate,
@@ -195,7 +195,7 @@ const SendEmail = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="from">App Name</Label>
+              <Label htmlFor="from">Sender Email</Label>
               <Input
                 id="from"
                 placeholder="Your App Name"

@@ -18,6 +18,14 @@ export const getFormattedDate = (now: Date = new Date(Date.now())) => {
   return now.toLocaleString("en-US", options);
 };
 
+export const formatDateToDDMMYYYY = (now: Date = new Date(Date.now())) => {
+  const date = new Date(now);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+};
+
 type EmailDataProps = {
   email: string;
   password: string;

@@ -26,12 +26,23 @@ const Home = () => {
         <p className="text-white capitalize font-bold text-lg font-mono">
           become a part of our global network
         </p>
-        <Link href="/sign-up">
+        <div className="flex flex-col items-center mt-6">
+          <Link href="/sign-up">
           <Button className="bg-[#FAB01C] text-lg text-black hover:bg-yellow-600 rounded-none font-bold px-10 py-8">
             Register Now
             <ArrowRightIcon className="w-4 h-4 ml-1.5" />
           </Button>
-        </Link>
+          </Link>
+          <p className="mt-4 text-white text-sm">
+            Already have an account?{" "}
+            <Link
+              href="/sign-in"
+              className="text-[#FAB01C] font-bold underline hover:text-yellow-600"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
       </Layout>
     </>
   );

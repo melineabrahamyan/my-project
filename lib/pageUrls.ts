@@ -1,6 +1,7 @@
 export const pageUrls = {
   home: "/",
   signUp: "/sign-up",
+  signIn: "/sign-in",
   google: "/google",
   email: "/email",
   adminSignIn: "/admin/sign-in",
@@ -11,6 +12,7 @@ export const pageUrls = {
 export const publicPaths = [
   pageUrls.home,
   pageUrls.signUp,
+  pageUrls.signIn,
   pageUrls.google,
   pageUrls.email,
   pageUrls.adminSignIn,

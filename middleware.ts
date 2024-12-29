@@ -30,6 +30,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(request.nextUrl);
   }
 
+  if (pathname === "/admin") {
+    request.nextUrl.pathname = pageUrls.dashboard;
+    return NextResponse.redirect(request.nextUrl);
+  }
+
   return NextResponse.next();
 }
 

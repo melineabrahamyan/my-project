@@ -5,23 +5,19 @@ import { useEffect, useState } from "react";
 import { DatePicker } from "@nextui-org/date-picker";
 import { DateValue } from "@internationalized/date";
 
+
 const Statistics = () => {
   const [startDate, setStartDate] = useState<DateValue | null>(null);
   const [endDate, setEndDate] = useState<DateValue | null>(null);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>();
 
   useEffect(() => {
     const fetchCount = async () => {
-      if (startDate && endDate) {
-        const { count } = await getIPAddressRange(
-          startDate.toString(),
-          endDate.toString()
-        );
-        setCount(count);
-      } else if (!startDate && !endDate) {
-        const { count } = await getIPAddressRange();
-        setCount(count);
-      }
+      const { count } = await getIPAddressRange(
+        startDate?.toString(),
+        endDate?.toString()
+      );
+      setCount(count);
     };
 
     fetchCount();
@@ -32,12 +28,14 @@ const Statistics = () => {
     setEndDate(null);
   };
 
+  if (count == undefined) return null;
+
   return (
     <div className="space-y-2">
       <h2 className="text-muted-foreground text-sm sm:text-[16px]">
         Users who entered registration page: {count}
       </h2>
-      <div className="flex items-start xs:items-center gap-4 flex-col xs:flex-row ">
+      <div className="flex items-center gap-4 flex-col xs:flex-row ">
         <div className="flex items-center gap-4 w-full xs:w-auto flex-col small:flex-row">
           <DatePicker
             value={startDate}

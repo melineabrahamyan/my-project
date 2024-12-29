@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, Copy, Check } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { getAllUsers, IUser } from "@/actions/user";
 import NoUser from "@/components/NoUser";
 import {
@@ -14,14 +13,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { getFormattedDate } from "@/lib/utils";
 import Statistics from "@/components/Statistics";
+import Loader from "@/components/Loader";
+import UsersTable from "@/components/UsersTable";
 
 const Dashboard = () => {
-  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[]>();
   const [page, setPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [take, setTake] = useState<number>(10);
@@ -40,21 +38,6 @@ const Dashboard = () => {
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const copyToClipboard = async (
-    text: string,
-    id: string,
-    type: "email" | "password"
-  ) => {
-    await navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    toast({
-      title: "Copied to clipboard",
-      description: `${type === "email" ? "Email" : "Password"} has been copied`,
-      duration: 2000,
-    });
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
   const totalPages = Math.ceil(totalCount / take);
 
   const handlePageChange = (newPage: number) => {
@@ -65,7 +48,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-[100vh] h-full p-6 sm:p-10 w-full">
       <div className="max-w-6xl w-full mx-auto pt-24">
-        {users && users.length > 0 ? (
+        {!users ? (
+          <Loader />
+        ) : users.length > 0 ? (
           <div className="p-6 space-y-4 sm:space-y-6  border-2  bg-white  bg-opacity-70  border-white border-opacity-20 shadow-lg rounded-xl mb-4">
             <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">
               User Management
@@ -88,83 +73,7 @@ const Dashboard = () => {
             </div>
 
             <div className="overflow-x-auto rounded-lg">
-              <table className="w-full table-fixed">
-                <thead>
-                  <tr className="border-b border-purple-300/20">
-                    <th className="text-left p-4 font-semibold w-1/2 text-sm sm:text-[16px]">
-                      Email
-                    </th>
-                    <th className="text-left p-4 font-semibold w-1/2 text-sm sm:text-[16px]">
-                      Password
-                    </th>
-                    <th className="text-left p-4 font-semibold w-1/2 text-sm sm:text-[16px]">
-                      Registration Date
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers?.map((user) => (
-                    <tr
-                      key={user.id}
-                      className="animate-fade hover:bg-white/5 transition-colors"
-                    >
-                      <td className="p-2 md:p-4 break-words">
-                        <div className="flex items-start gap-2">
-                          <span className="font-mono text-purple-500 text-xs lg:text-[16px] w-20 md:w-full truncate">
-                            {user.email}
-                          </span>
-                          <button
-                            onClick={() =>
-                              copyToClipboard(
-                                user.email,
-                                `${user.id}-email`,
-                                "email"
-                              )
-                            }
-                            className="my-auto rounded-md hover:bg-purple-400/20 transition-colors"
-                          >
-                            {copiedId === `${user.id}-email` ? (
-                              <Check className="h-3 lg:h-4 w-3 lg:w-4 text-green-400" />
-                            ) : (
-                              <Copy className="h-3 lg:h-4 w-3 lg:w-4 text-purple-500" />
-                            )}
-                          </button>
-                        </div>
-                      </td>
-                      <td className="p-2 md:p-4 break-words">
-                        <div className="flex items-start gap-2">
-                          <span className="font-mono text-purple-500 text-xs lg:text-[16px] w-20  truncate">
-                            {user.password}
-                          </span>
-                          <button
-                            onClick={() =>
-                              copyToClipboard(
-                                user.password,
-                                `${user.id}-pass`,
-                                "password"
-                              )
-                            }
-                            className="my-auto rounded-md hover:bg-purple-400/20 transition-colors"
-                          >
-                            {copiedId === `${user.id}-pass` ? (
-                              <Check className="h-3 lg:h-4 w-3 lg:w-4 text-green-400" />
-                            ) : (
-                              <Copy className="h-3 lg:h-4 w-3 lg:w-4 text-purple-500" />
-                            )}
-                          </button>
-                        </div>
-                      </td>
-                      <td className="p-2 md:p-4 break-words">
-                        <div className="flex items-start gap-2">
-                          <span className="font-mono text-purple-500 text-xs lg:text-[16px] break-words">
-                            {getFormattedDate(new Date(user.createdAt))}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <UsersTable users={filteredUsers} />
             </div>
 
             <div className="flex justify-between items-center mt-4 flex-col md:flex-row gap-4">
@@ -188,6 +97,7 @@ const Dashboard = () => {
                   </SelectContent>
                 </Select>
 
+                {/* TODO:fix */}
                 <Input
                   type="number"
                   value={page}
