@@ -34,8 +34,10 @@ const Dashboard = () => {
     getUsers();
   }, [page, take]);
 
-  const filteredUsers = users?.filter((user) =>
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users?.filter(
+    (user) =>
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.registeredBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(totalCount / take);
@@ -77,7 +79,7 @@ const Dashboard = () => {
             </div>
 
             <div className="flex justify-between items-center mt-4 flex-col md:flex-row gap-4">
-              <div className="flex gap-4">
+              <div className="flex gap-4 w-full max-w-[300px]">
                 <Select
                   value={take.toString()}
                   onValueChange={(e) => {
@@ -97,19 +99,25 @@ const Dashboard = () => {
                   </SelectContent>
                 </Select>
 
-                {/* TODO:fix */}
-                <Input
-                  type="number"
-                  value={page}
-                  onChange={(e) =>
-                    setPage(
-                      Math.max(1, Math.min(totalPages, Number(e.target.value)))
-                    )
-                  }
-                  className="p-2 border rounded-md w-24"
-                  min={1}
-                  max={totalPages}
-                />
+                <Select
+                  value={page.toString()}
+                  required
+                  onValueChange={(val) => {
+                    const selectedPage = parseInt(val, 10);
+                    handlePageChange(selectedPage);
+                  }}
+                >
+                  <SelectTrigger className="input-transition">
+                    <SelectValue placeholder={page} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...Array(totalPages).keys()].map((i) => (
+                      <SelectItem key={i} value={(i + 1).toString()}>
+                        {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="flex gap-2 sm:gap-4 items-center justify-center">
