@@ -3,22 +3,18 @@
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
 
-const brokeragesImages = [
-  "/samsung.svg",
-  "/apple.svg",
-  "/facebook.svg",
-  "/quora.svg",
-  "/sass.svg",
-  "/airbnb.svg",
-];
+const brokeragesImages = Array.from(
+  { length: 16 },
+  (_, i) => `/clients/${i + 1}.svg`
+);
 
 export const Marqueeline = () => {
   return (
-    <Marquee className=" py-4 ">
+    <Marquee className="py-4">
       {[...brokeragesImages, ...brokeragesImages, ...brokeragesImages].map(
-        (item) => (
+        (item, index) => (
           <Image
-            key={item + Math.random()}
+            key={item + index}
             src={item}
             width={item.includes("sass") ? 64 : 112}
             height={50}

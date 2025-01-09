@@ -44,7 +44,9 @@ export const generateEmailNotification = ({
 
   return {
     from: {
+      // TODO: change Your App Team
       name: "Your App Name",
+      address: "email@example.com",
     },
     to: adminEmail,
     subject: "New User Registration Notification",
@@ -64,6 +66,7 @@ export const generateEmailNotification = ({
       <br/><br/>
       <p>Best regards,<br/>Your App Team</p>
     `,
+    // TODO: change Your App Team
   };
 };
 

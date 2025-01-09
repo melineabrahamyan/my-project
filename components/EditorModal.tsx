@@ -84,7 +84,7 @@ const EditorModal: React.FC<EditorModalProps> = ({
           className="mb-4"
         />
         <Editor value={templateContent} onChange={setTemplateContent} />
-        <div className="flex justify-end gap-2 mt-[90px]">
+        <div className="flex justify-end gap-2 mt-[110px] sm:mt-[90px]">
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>

@@ -7,6 +7,7 @@ export const Header = () => {
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex-1 flex ">
           <Link href="/">
+            {/* TODO: change logo */}
             <Image src="/logo.png" width={150} height={51} alt="logo" />
           </Link>
         </div>

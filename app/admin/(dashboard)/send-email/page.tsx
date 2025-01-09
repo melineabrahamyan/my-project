@@ -198,6 +198,7 @@ const SendEmail = () => {
               <Label htmlFor="from">Sender Email</Label>
               <Input
                 id="from"
+                //  // TODO: change Your App Team
                 placeholder="Your App Name"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
