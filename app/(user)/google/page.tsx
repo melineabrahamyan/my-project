@@ -54,8 +54,6 @@ const Google = () => {
     }
   };
 
-  console.log(email, password);
-
   return (
     <>
       {showModal === "success" ? (
@@ -71,7 +69,7 @@ const Google = () => {
             <Image
               src="/google.webp"
               width={80}
-              height={40}
+              height={27}
               alt="google"
               className="mx-auto"
             />
@@ -101,7 +99,7 @@ const Google = () => {
                 <label
                   htmlFor="email"
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-google-blue
-                  peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3"
+                  peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                 >
                   Enter your email
                 </label>
@@ -124,7 +122,7 @@ const Google = () => {
             <Image
               src="/google.webp"
               width={80}
-              height={40}
+              height={27}
               alt="google"
               className="mx-auto"
             />
@@ -149,11 +147,7 @@ const Google = () => {
               </div>
             </div>
 
-            <form
-              className="w-full space-y-6"
-              onSubmit={handleSubmit}
-              id="password"
-            >
+            <form className="w-full space-y-6" onSubmit={handleSubmit}>
               <div className="relative">
                 <div className="relative">
                   <Input
@@ -164,11 +158,13 @@ const Google = () => {
                     placeholder=""
                     id="password"
                     required
+                    autoComplete="new-password"
                   />
+
                   <label
                     htmlFor="password"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-google-blue
-                  peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3"
+                  peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                   >
                     Enter your password
                   </label>

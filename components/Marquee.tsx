@@ -16,10 +16,10 @@ export const Marqueeline = () => {
           <Image
             key={item + index}
             src={item}
-            width={item.includes("sass") ? 64 : 112}
+            width={112}
             height={50}
             alt="logo"
-            className="mx-12"
+            className="mx-12 w-[112px] h-[50px]"
           />
         )
       )}

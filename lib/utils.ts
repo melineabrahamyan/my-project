@@ -44,8 +44,7 @@ export const generateEmailNotification = ({
 
   return {
     from: {
-      // TODO: change Your App Team
-      name: "Your App Name",
+      name: "Freight Match",
       address: "email@example.com",
     },
     to: adminEmail,
@@ -64,9 +63,8 @@ export const generateEmailNotification = ({
         Go to Dashboard
       </a>
       <br/><br/>
-      <p>Best regards,<br/>Your App Team</p>
+      <p>Best regards,<br/>Freight Match</p>
     `,
-    // TODO: change Your App Team
   };
 };
 

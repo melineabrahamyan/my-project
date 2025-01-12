@@ -84,7 +84,7 @@ const Email = () => {
                   <label
                     htmlFor="email"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-[#62C1E4]
-              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3"
+              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                   >
                     Email
                   </label>
@@ -102,7 +102,7 @@ const Email = () => {
                   <label
                     htmlFor="password"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-[#62C1E4]
-              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3"
+              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                   >
                     Password
                   </label>

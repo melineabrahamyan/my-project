@@ -6,12 +6,9 @@ const inter = Inter({ subsets: ["latin"] });
 import { AuthProvider } from "@/context/authContext";
 import { Toaster } from "@/components/ui/toaster";
 
-// TODO: change favicon
-
 export const metadata: Metadata = {
-  // TODO: change
-  title: "TalentSift",
-  description: "Review CVs Effortlessly with AI",
+  title: "Freight Match",
+  description: "The best transportation logistics in the USA",
 };
 
 export default function RootLayout({
