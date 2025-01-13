@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        color: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .header {
+        width: 100%;
+        padding: 13px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffaf29;
+        overflow-x: hidden;
+      }
+
+      .header > img,
+      .header > h4,
+      .header > div {
+        flex: 1;
+        max-width: 100%;
+      }
+
+      h4 {
+        text-align: center;
+        font-size: 1rem;
+        white-space: nowrap;
+        color: black;
+        font-weight: 500;
+      }
+
+      .hero {
+        width: 100%;
+        /* email-bg */
+        background-image: url("https://my-project-nine-lime.vercel.app/van.png");
+        background-position: center;
+        padding: 20px 20px 40px;
+      }
+
+      .hero > p {
+        max-width: 560px;
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .features-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .features {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .features > .feature {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      footer {
+        width: 100%;
+        padding: 22px 10px;
+        text-align: center;
+        background-color: #ffaf29;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img
+          class="logo"
+          src="https://my-project-nine-lime.vercel.app/logo.svg"
+          alt="Freight Match"
+          width="67"
+          height="55"
+        />
+        <h4>Your Partner in Logistics</h4>
+        <div></div>
+      </header>
+
+      <!-- src="https://my-project-nine-lime.vercel.app/truck.png partnership phone " -->
+
+      <div class="hero">
+        <h2>Join Freight Match Today!</h2>
+        <p>
+          Freight Match connects you with top brokers and countless freight
+          opportunities across the USA. Join today to streamline your logistics
+          operations.
+        </p>
+        <div class="features-container">
+          <div class="features">
+            <div class="feature">
+              <img
+                src="https://my-project-nine-lime.vercel.app/logo.svg"
+                alt="matching"
+                width="20"
+                height="20"
+              />
+              <span>Efficient Load Matching.</span>
+            </div>
+            <div class="feature">
+              <img
+                src="https://my-project-nine-lime.vercel.app/logo.svg"
+                alt="partnership"
+                width="20"
+                height="20"
+              />
+              <span>Trusted Broker Partnerships.</span>
+            </div>
+            <div class="feature">
+              <img
+                src="https://my-project-nine-lime.vercel.app/logo.svg"
+                alt="support"
+                width="20"
+                height="20"
+              />
+              <span>24/7 Support for Carriers.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>© 2025 Freight Match, Inc. | Privacy Policy | Terms of Service.</p>
+      </footer>
+    </div>
+  </body>
+</html>
