@@ -73,7 +73,7 @@ const EditSupportEmail = () => {
           <Button
             onClick={handleNaviateDashboard}
             variant="secondary"
-            type="submit"
+            type="button"
             className="w-full hover-scale border border-gray-200"
           >
             Cancel
