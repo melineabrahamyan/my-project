@@ -64,10 +64,10 @@ interface IUserLoginRequest {
 
 export const signInUser = async <T = IUserLoginRequest>(
   authData: T
-): Promise<void> => {
+): Promise<number> => {
   try {
     const response = await axiosApiInstance.post("/personal-data/", authData);
-    return response.data;
+    return response.data.id as number;
   } catch (error: any) {
     const message =
       error?.response?.data?.message || "An unexpected error occurred";

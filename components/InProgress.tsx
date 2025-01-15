@@ -24,8 +24,8 @@ const InProgress = () => {
           </p>
           <Image
             src="/progress.png"
-            width={300}
-            height={300}
+            width={250}
+            height={250}
             alt="progress"
             className="mx-auto"
           />

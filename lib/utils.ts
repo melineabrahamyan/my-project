@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { rejectionEmail } from "./rejectionEmail";
+import { getSupportEmail } from "@/actions/support-email";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,6 +70,16 @@ export const generateEmailNotification = ({
   };
 };
 
+export const generateRejectionEmail = async (email: string) => {
+  const supportEmail = await getSupportEmail();
+  return {
+    from: { name: "Freight Match", address: "email@example.com" },
+    to: email,
+    subject: "Rejection Notification",
+    html: rejectionEmail(supportEmail),
+  };
+};
+
 export const addFooter = () => {
   return `<footer style="background-color: #f8f9fa; padding: 40px 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
   <div style="max-width: 600px; margin: 0 auto;">
@@ -77,7 +89,7 @@ export const addFooter = () => {
        Register Now
     </a>
     <hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 20px 0;">
-    <p style="font-size: 14px; color: #777;">&copy; 2024 Your Company Name. All rights reserved.</p>
+    <p style="font-size: 14px; color: #777;">&copy; 2025 Freight Match. All rights reserved.</p>
   </div>
 </footer>
 `;

@@ -1,8 +1,23 @@
+"use client";
+
+import { getSupportEmail } from "@/actions/support-email";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { HiOutlineMail } from "react-icons/hi";
 
 export const Header = () => {
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      const supportEmail = await getSupportEmail();
+      setEmail(supportEmail);
+    };
+
+    fetchEmail();
+  }, []);
+
   return (
     <header className="w-full bg-white bg-opacity-80 shadow-md backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between py-3 px-6">
@@ -18,15 +33,15 @@ export const Header = () => {
         </div>
 
         <div className="flex-1 flex justify-end items-center">
-          <Link
-            href="mailto:contact@example.com"
-            className="flex items-center gap-2 text-gray-800 hover:text-[#FAB01C] transition"
-          >
-            <HiOutlineMail className="text-lg" />
-            <span className="text-xs sm:text-sm font-medium">
-              contact@example.com
-            </span>
-          </Link>
+          {email && (
+            <Link
+              href="mailto:contact@example.com"
+              className="flex items-center gap-2 text-gray-800 hover:text-[#FAB01C] transition"
+            >
+              <HiOutlineMail className="text-lg" />
+              <span className="text-xs sm:text-sm font-medium">{email}</span>
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -17,6 +17,7 @@ import EditorModal from "@/components/EditorModal";
 import DeleteTemplateModal from "@/components/DeleteTemplateModal";
 import { sendEmailNotification } from "@/actions/notification";
 import { addFooter } from "@/lib/utils";
+import { defaultTemplate } from "@/lib/detault";
 
 export type Template = {
   id: string;
@@ -42,14 +43,10 @@ const SendEmail = () => {
              `,
     },
     {
-      // hesa
       id: "default_template",
       name: "Driver Invitation 2",
       editable: false,
-      content: `<h1>Join Our Logistics Platform!</h1>
-                <p>Hello Driver,</p>
-                <p>Our platform connects you with hundreds of delivery opportunities every day. Start earning today with our streamlined process and reliable support.</p>
-               `,
+      content: defaultTemplate,
     },
   ]);
 
@@ -123,14 +120,15 @@ const SendEmail = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      const selectedTemplate = templates.find((tpl) => tpl.id === template);
       const footer = addFooter();
-      const fullTemplate =
-        templates.find((tpl) => tpl.id === template)?.content + footer;
+      const fullTemplate = selectedTemplate?.content + footer;
+
       await sendEmailNotification({
         from: { name: from.trim(), address: "email@example.com" },
         to: email.trim(),
         subject: title.trim(),
-        html: fullTemplate,
+        html: selectedTemplate?.editable ? fullTemplate : defaultTemplate,
       });
 
       toast({

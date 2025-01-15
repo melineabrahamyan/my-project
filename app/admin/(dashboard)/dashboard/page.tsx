@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const { data, meta } = await getAllUsers(page, take);
+      const { data, meta } = await getAllUsers(page, take, "DESC");
       setUsers(data);
       setTotalCount(meta.totalCount);
     };
