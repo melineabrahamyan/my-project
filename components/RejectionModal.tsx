@@ -19,7 +19,7 @@ const RejectionModal = () => {
             Rejected
           </h1>
           <p className="text-sm text-muted-foreground">
-            We're sorry, but your submission could not be processed. 😞
+            We&apos;re sorry, but your submission could not be processed. 😞
           </p>
           <Image
             src="/rejection.png"
