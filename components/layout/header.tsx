@@ -7,15 +7,24 @@ import { useEffect, useState } from "react";
 import { HiOutlineMail } from "react-icons/hi";
 
 export const Header = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchEmail = async () => {
-      const supportEmail = await getSupportEmail();
-      setEmail(supportEmail);
-    };
+    const storedEmail = sessionStorage.getItem("supportEmail");
 
-    fetchEmail();
+    if (storedEmail) {
+      setEmail(storedEmail);
+    } else {
+      const fetchEmail = async () => {
+        const supportEmail = await getSupportEmail();
+        setEmail(supportEmail);
+        if (supportEmail) {
+          sessionStorage.setItem("supportEmail", supportEmail);
+        }
+      };
+
+      fetchEmail();
+    }
   }, []);
 
   return (
@@ -35,7 +44,7 @@ export const Header = () => {
         <div className="flex-1 flex justify-end items-center">
           {email && (
             <Link
-              href="mailto:contact@example.com"
+              href={`mailto:${email}`}
               className="flex items-center gap-2 text-gray-800 hover:text-[#FAB01C] transition"
             >
               <HiOutlineMail className="text-lg" />
