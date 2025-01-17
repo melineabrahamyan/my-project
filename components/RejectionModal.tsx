@@ -19,7 +19,7 @@ const RejectionModal = () => {
             Rejected
           </h1>
           <p className="text-sm text-muted-foreground">
-            We&apos;re sorry, but your submission could not be processed. 😞
+            We&apos;re sorry, but your submission could not be processed.
           </p>
           <Image
             src="/rejection.png"
@@ -32,7 +32,7 @@ const RejectionModal = () => {
             Please review the details and try again later.
           </p>
           <p className="text-sm text-muted-foreground">
-            If you have any questions, feel free to reach out to support. 💬
+            If you have any questions, feel free to reach out to support.
           </p>
         </div>
         <button

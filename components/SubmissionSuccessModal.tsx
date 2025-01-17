@@ -19,7 +19,7 @@ const SubmissionSuccessModal = () => {
             Thank you for joining us!
           </h1>
           <p className="text-sm text-muted-foreground">
-            Your submission has been successfully received. 🎉
+            Your submission has been successfully received.
           </p>
           <Image
             src="/success.png"
@@ -33,7 +33,7 @@ const SubmissionSuccessModal = () => {
             hours.
           </p>
           <p className="text-sm text-muted-foreground">
-            We’re excited to have you on board! 🚀
+            We&apos;re excited to have you on board!
           </p>
         </div>
         <button

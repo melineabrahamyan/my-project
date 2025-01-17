@@ -30,7 +30,7 @@ const InProgress = () => {
             className="mx-auto"
           />
           <p className="text-sm text-muted-foreground">
-            Thank you for your patience! 🙏
+            Thank you for your patience!
           </p>
         </div>
         <button
