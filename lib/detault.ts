@@ -149,6 +149,15 @@ export const defaultTemplate = `
         </p>
         <div class="features-container">
           <div class="features-box">
+           <div class="feature">
+              <img
+                src="https://my-project-nine-lime.vercel.app/verified.png"
+                alt="verified brokers"
+                width="20"
+                height="20"
+              />
+              <span>Only Verified Brokers.</span>
+            </div>
             <div class="feature">
               <img
                 src="https://my-project-nine-lime.vercel.app/truck.png"
